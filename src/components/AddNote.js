@@ -9,7 +9,7 @@ export default function AddNote() {
   document.title = "Diary - Add Note!";
   const host = process.env.REACT_APP_BACKEND_HOST;
   const { setCreateMode, toggleAlert, setIsLoaded } = useContext(NoteContext);
-  const { auth_token, setAuthToken, message, setMessage, setUser } = useContext(AuthContext);
+  const { auth_token, setAuthToken, setMessage, clearUser } = useContext(AuthContext);
 
   const addNote = async (event) => {
     event.preventDefault();
@@ -38,8 +38,8 @@ export default function AddNote() {
             setMessage("");
             setCreateMode(false);
             setIsLoaded(false);
-            setUser(null);
             setAuthToken(null);
+            clearUser();
             localStorage.removeItem("auth-token");
         } else {
             toggleAlert({
@@ -85,7 +85,7 @@ export default function AddNote() {
             <textarea className="form-control" id="description" name='description' rows="5" minLength={60} required></textarea>
         </div>
         <div style={{textAlign: "right"}}>
-            <button disabled={message} className="btn btn-primary">Create Note!</button>
+            <button className="btn btn-primary">Create Note!</button>
         </div>
     </form>
     </>

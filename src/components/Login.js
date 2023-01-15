@@ -11,7 +11,7 @@ export default function Login() {
   document.title = "Diary - Login!";
   const host = process.env.REACT_APP_BACKEND_HOST;
 
-  const { message, setMessage, setAuthToken, setUser } = useContext(AuthContext);
+  const { setMessage, setAuthToken, setUser } = useContext(AuthContext);
   const { toggleAlert, setIsLoaded } = useContext(NoteContext);
   
   const login = async (event) => {
@@ -48,7 +48,13 @@ export default function Login() {
 
     setAuthToken(responseData.authToken);
     localStorage.setItem("auth-token", responseData.authToken);
+    
+    //Save user in react state & local storage
     setUser(responseData.user);
+    localStorage.setItem("name", responseData.user.name);
+    localStorage.setItem("email", responseData.user.email);
+    localStorage.setItem("profession", responseData.user.profession);
+    localStorage.setItem("bio", responseData.user.bio);
 
     setMessage("");
     setIsLoaded(false);
@@ -63,16 +69,16 @@ export default function Login() {
     <h3 className='text-center'>Log In</h3>
     <form onSubmit={login}>
         <ErrorMessage />
-        <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name='email' required />
+        <div className="form-floating my-3">
+          <input type="email" className="form-control" id="floatingInput" placeholder="name@gmail.com" name='email' />
+          <label htmlFor="floatingInput">Email address</label>
         </div>
-        <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-            <input type="password" className="form-control" id="exampleInputPassword1" name='password' required />
+        <div className="form-floating my-3">
+          <input type="password" className="form-control" id="floatingPassword" placeholder="Password" name='password' />
+          <label htmlFor="floatingPassword">Password</label>
         </div>
-        <div>
-          <button disabled={message} type="submit" className="btn btn-primary">Login</button>
+        <div className='my-2'>
+          <button type="submit" className="btn btn-primary">Login</button>
         </div>
         <div className='my-2'>
           <p>Don't have any account? <Link className='link-primary' style={{textDecoration: "none"}} to="/signup">Signup</Link> first.</p>

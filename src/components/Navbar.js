@@ -9,7 +9,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const { createMode, setCreateMode, setEditedNoteData, viewedNote, setViewedNote } = useContext(NoteContext);
-  const { setMessage, auth_token, setAuthToken, setUser } = useContext(AuthContext);
+  const { setMessage, auth_token, setAuthToken, clearUser } = useContext(AuthContext);
 
   const handleClick = () => {
     setMessage("");
@@ -27,8 +27,9 @@ export default function Navbar() {
 
   const logout = () => {
     handleClick();
-    setUser(null);
     setAuthToken(null);
+
+    clearUser();
     localStorage.removeItem("auth-token");
     navigate("/login");
   };

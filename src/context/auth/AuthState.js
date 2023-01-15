@@ -6,10 +6,23 @@ const AuthState = (props) => {
   const [auth_token, setAuthToken] = useState(
     localStorage.getItem("auth-token")
   );
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(localStorage.getItem("email") ? {
+    name: localStorage.getItem("name"),
+    email: localStorage.getItem("email"),
+    profession: localStorage.getItem("profession"),
+    bio: localStorage.getItem("bio"),
+  } : null);
   const [message, setMessage] = useState("");
 
-  const collection = { auth_token, setAuthToken, message, setMessage, user, setUser };
+  const clearUser = () => {
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("profession");
+    localStorage.removeItem("bio");
+    setUser(null);
+  };
+
+  const collection = { auth_token, setAuthToken, message, setMessage, user, setUser, clearUser };
   return (
     <AuthContext.Provider value={collection}>
       {props.children}

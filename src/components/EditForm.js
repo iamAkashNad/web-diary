@@ -8,7 +8,7 @@ import AuthContext from "../context/auth/AuthContext";
 export default function EditForm() {
   document.title = "Diary - Edit Note!";
   const host = process.env.REACT_APP_BACKEND_HOST;
-  const { auth_token, setAuthToken, message, setMessage, setUser } = useContext(AuthContext);
+  const { auth_token, setAuthToken, setMessage, clearUser } = useContext(AuthContext);
   const { editedNoteData, setEditedNoteData, toggleAlert, setIsLoaded, viewedNote, setViewedNote } = useContext(NoteContext);
   const editNote = async (event) => {
     event.preventDefault();
@@ -35,8 +35,8 @@ export default function EditForm() {
             setIsLoaded(false);
             setViewedNote(null);
             setEditedNoteData(null);
-            setUser(null);
             setAuthToken(null);
+            clearUser();
             localStorage.removeItem("auth-token");
         } else {
             toggleAlert({
@@ -125,7 +125,7 @@ export default function EditForm() {
             </div>
             <div style={{textAlign: "right"}}>
                 <button type="button" className="btn btn-sm btn-secondary mx-1" onClick={closeEditPageWithoutEdit}>Go Back</button>
-                <button disabled={message} className="btn btn-sm btn-primary">Edit Note!</button>
+                <button className="btn btn-sm btn-primary">Edit Note!</button>
             </div>
         </form>
     </>

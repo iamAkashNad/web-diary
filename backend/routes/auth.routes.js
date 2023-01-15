@@ -11,6 +11,8 @@ router.post("/login", authController.login);
 
 router.get("/profile", getUserId, authController.getUser);
 
+router.patch("/profile/edit", getUserId, authController.editUser);
+
 router.post("/logout", authController.logout);
 
 module.exports = router;

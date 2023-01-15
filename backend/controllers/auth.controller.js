@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const User = require("../models/user.model");
+const isFill = require("../util/isFill.util");
 const loginValidation = require("../validations/user/login.validation");
 const signupValidation = require("../validations/user/signup.validation");
 
@@ -60,7 +61,7 @@ const login = async (req, res) => {
 
     let user
     try {
-        user = await User.findOne({ _id: existingUser._id }, { password: 0 });
+        user = await User.findOne({ _id: existingUser._id }, { password: 0, _id: 0 });
     } catch(error) {
         return res.status(500).json({ message: "Something went wrong internally!" });
     }
@@ -85,11 +86,30 @@ const getUser = async (req, res) => {
     res.json(user);
 };
 
+const editUser = async (req, res, next) => {
+    const userId = res.locals.authUserId;
+    let { password, profession, bio } = req.body;
+
+    try {
+        const user = await User.findOne({ _id: userId }, { password: 1 });
+        const isMatched = await bcryptjs.compare(password, user.password);
+        if(!isMatched) {
+            return res.json({ notYou: true });
+        }
+        await User.updateOne({ _id: userId }, { $set: {profession, bio} });
+    } catch (error) {
+        return next(error);
+    }
+
+    res.status(203).json({ update: true, message: "Updated successfully!" });
+};
+
 const logout = (req, res) => {};
 
 module.exports = {
     signup: signup,
     login: login,
     getUser: getUser,
+    editUser: editUser,
     logout: logout
 };

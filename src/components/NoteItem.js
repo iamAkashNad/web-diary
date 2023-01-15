@@ -6,7 +6,7 @@ import AuthContext from "../context/auth/AuthContext";
 export default function NoteItem({ noteId, title, description, tag, hrDate }) {
   const host = process.env.REACT_APP_BACKEND_HOST;
   const { notes, setNotes, setEditedNoteData, toggleAlert, setViewedNote, setIsLoaded } = useContext(NoteContext);
-  const { auth_token, setAuthToken, setUser } = useContext(AuthContext);
+  const { auth_token, setAuthToken, clearUser } = useContext(AuthContext);
 
   const editButtonClicked = () => {
     setEditedNoteData({noteId, title, description});
@@ -26,8 +26,8 @@ export default function NoteItem({ noteId, title, description, tag, hrDate }) {
     }
     if(!response.ok) {
       if(response.status === 401) {
-          setUser(null);
           setAuthToken(null);
+          clearUser();
           localStorage.removeItem("auth-token");
       } else {
           toggleAlert({

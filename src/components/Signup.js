@@ -9,7 +9,7 @@ import ErrorMessage from './ErrorMessage';
 export default function Signup() {
   document.title = "Diary - Signup!";
   const host = process.env.REACT_APP_BACKEND_HOST;
-  const { message, setMessage } = useContext(AuthContext);
+  const { setMessage } = useContext(AuthContext);
   const { toggleAlert } = useContext(NoteContext);
   const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ export default function Signup() {
                 <textarea type="text" className="form-control" id="bio" name='bio' rows="5"></textarea>
             </div>
             <div>
-                <button type="submit" disabled={message} className="btn btn-primary">Sign up</button>
+                <button type="submit" className="btn btn-primary">Sign up</button>
             </div>
             <div className='my-2'>
                 <p>Already have an account? <Link className='link-primary' style={{textDecoration: "none"}} to="/login">Login</Link> instead.</p>
